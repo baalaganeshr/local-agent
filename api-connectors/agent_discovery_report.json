@@ -1,0 +1,372 @@
+[
+  {
+    "name": "collections-500-agents",
+    "path": "..\\external-agents\\collections-500-agents",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "discord",
+      "sales",
+      "marketing",
+      "social media",
+      "instagram",
+      "testing",
+      "qa",
+      "automation",
+      "web scraping",
+      "data extraction",
+      "crawling",
+      "ai",
+      "llm",
+      "gpt",
+      "claude",
+      "openai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841185.971937"
+  },
+  {
+    "name": "collections-awesome-agents",
+    "path": "..\\external-agents\\collections-awesome-agents",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "whatsapp",
+      "telegram",
+      "discord",
+      "slack",
+      "sales",
+      "crm",
+      "marketing",
+      "social media",
+      "twitter",
+      "linkedin",
+      "testing",
+      "qa",
+      "automation",
+      "stripe",
+      "web scraping",
+      "crawling",
+      "ai",
+      "llm",
+      "gpt",
+      "claude",
+      "openai",
+      "anthropic"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841199.8717923"
+  },
+  {
+    "name": "collections-best-agents",
+    "path": "..\\external-agents\\collections-best-agents",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "discord",
+      "slack",
+      "sales",
+      "twitter",
+      "testing",
+      "qa",
+      "automation",
+      "web scraping",
+      "ai",
+      "llm",
+      "gpt"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841201.3976583"
+  },
+  {
+    "name": "collections-genai-agents",
+    "path": "..\\external-agents\\collections-genai-agents",
+    "has_readme": true,
+    "has_requirements": true,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "discord",
+      "sales",
+      "marketing",
+      "social media",
+      "twitter",
+      "linkedin",
+      "testing",
+      "qa",
+      "automation",
+      "playwright",
+      "web scraping",
+      "ai",
+      "llm",
+      "gpt",
+      "openai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841211.3107333"
+  },
+  {
+    "name": "control-autogen",
+    "path": "..\\external-agents\\control-autogen",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "discord",
+      "twitter",
+      "linkedin",
+      "playwright",
+      "ai",
+      "llm",
+      "gpt",
+      "openai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754648458.452296"
+  },
+  {
+    "name": "control-chatdev-fixed",
+    "path": "..\\external-agents\\control-chatdev-fixed",
+    "has_readme": true,
+    "has_requirements": true,
+    "has_main": false,
+    "language": "python",
+    "capabilities": [
+      "discord",
+      "testing",
+      "ai",
+      "llm",
+      "openai"
+    ],
+    "integration_complexity": "medium",
+    "stars": 0,
+    "last_updated": "1754842826.0436559"
+  },
+  {
+    "name": "control-crewai-fixed",
+    "path": "..\\external-agents\\control-crewai-fixed",
+    "has_readme": true,
+    "has_requirements": true,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "twitter",
+      "testing",
+      "qa",
+      "automation",
+      "ai",
+      "llm",
+      "openai"
+    ],
+    "integration_complexity": "medium",
+    "stars": 0,
+    "last_updated": "1754842844.011831"
+  },
+  {
+    "name": "control-superagi",
+    "path": "..\\external-agents\\control-superagi",
+    "has_readme": true,
+    "has_requirements": true,
+    "has_main": true,
+    "language": "python",
+    "capabilities": [
+      "whatsapp",
+      "telegram",
+      "discord",
+      "twitter",
+      "instagram",
+      "ai",
+      "llm"
+    ],
+    "integration_complexity": "medium",
+    "stars": 0,
+    "last_updated": "1754648171.0070975"
+  },
+  {
+    "name": "infrastructure-docker",
+    "path": "..\\external-agents\\infrastructure-docker",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "ai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841180.25749"
+  },
+  {
+    "name": "infrastructure-kong",
+    "path": "..\\external-agents\\infrastructure-kong",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "slack",
+      "twitter",
+      "ai",
+      "llm"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841175.4539998"
+  },
+  {
+    "name": "messaging-evolution-fixed",
+    "path": "..\\external-agents\\messaging-evolution-fixed",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "javascript",
+    "capabilities": [
+      "whatsapp",
+      "discord",
+      "messaging",
+      "instagram",
+      "qa",
+      "ai",
+      "openai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754842785.3289287"
+  },
+  {
+    "name": "messaging-receevi-fixed",
+    "path": "..\\external-agents\\messaging-receevi-fixed",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "javascript",
+    "capabilities": [
+      "whatsapp",
+      "ai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754842796.2540908"
+  },
+  {
+    "name": "messaging-waha-fixed",
+    "path": "..\\external-agents\\messaging-waha-fixed",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "javascript",
+    "capabilities": [
+      "whatsapp",
+      "ai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754842792.1042907"
+  },
+  {
+    "name": "messaging-whatsapp-fixed",
+    "path": "..\\external-agents\\messaging-whatsapp-fixed",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "javascript",
+    "capabilities": [
+      "whatsapp",
+      "ai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754842794.0878303"
+  },
+  {
+    "name": "payments-stripe-samples",
+    "path": "..\\external-agents\\payments-stripe-samples",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "unknown",
+    "capabilities": [
+      "discord",
+      "twitter",
+      "testing",
+      "payment",
+      "stripe",
+      "billing",
+      "ai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841159.8144202"
+  },
+  {
+    "name": "social-langchain-official",
+    "path": "..\\external-agents\\social-langchain-official",
+    "has_readme": true,
+    "has_requirements": true,
+    "has_main": false,
+    "language": "javascript",
+    "capabilities": [
+      "slack",
+      "marketing",
+      "social media",
+      "twitter",
+      "linkedin",
+      "web scraping",
+      "ai",
+      "llm",
+      "anthropic"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754840893.9107249"
+  },
+  {
+    "name": "testing-playwright",
+    "path": "..\\external-agents\\testing-playwright",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "javascript",
+    "capabilities": [
+      "discord",
+      "testing",
+      "automation",
+      "playwright",
+      "ai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754840922.997352"
+  },
+  {
+    "name": "testing-selenium",
+    "path": "..\\external-agents\\testing-selenium",
+    "has_readme": true,
+    "has_requirements": false,
+    "has_main": false,
+    "language": "javascript",
+    "capabilities": [
+      "linkedin",
+      "testing",
+      "qa",
+      "automation",
+      "selenium",
+      "ai"
+    ],
+    "integration_complexity": "simple",
+    "stars": 0,
+    "last_updated": "1754841151.1278775"
+  }
+]

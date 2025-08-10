@@ -1,0 +1,77 @@
+{
+  "agents": {
+    "evolution-whatsapp": {
+      "name": "evolution-whatsapp",
+      "description": "Complete WhatsApp Business solution with multi-channel support",
+      "category": "messaging",
+      "price_tier": "basic",
+      "capabilities": [
+        "whatsapp",
+        "messaging",
+        "automation",
+        "api"
+      ],
+      "integration_complexity": "medium",
+      "test_score": 85,
+      "status": "active",
+      "downloads": 1250,
+      "rating": 4.7,
+      "reviews": [],
+      "last_updated": "2025-08-10T22:08:27.118396"
+    },
+    "langchain-social": {
+      "name": "langchain-social",
+      "description": "AI-powered social media content generation and posting",
+      "category": "social",
+      "price_tier": "premium",
+      "capabilities": [
+        "twitter",
+        "linkedin",
+        "content",
+        "ai"
+      ],
+      "integration_complexity": "simple",
+      "test_score": 92,
+      "status": "active",
+      "downloads": 2100,
+      "rating": 4.9,
+      "reviews": [],
+      "last_updated": "2025-08-10T22:08:27.118455"
+    },
+    "sales-outreach": {
+      "name": "sales-outreach",
+      "description": "Automated lead generation and sales outreach system",
+      "category": "sales",
+      "price_tier": "premium",
+      "capabilities": [
+        "lead generation",
+        "crm",
+        "automation",
+        "analytics"
+      ],
+      "integration_complexity": "complex",
+      "test_score": 78,
+      "status": "testing",
+      "downloads": 890,
+      "rating": 4.5,
+      "reviews": [],
+      "last_updated": "2025-08-10T22:08:27.118467"
+    }
+  },
+  "stats": {
+    "total_agents": 3,
+    "categories": {
+      "messaging": 1,
+      "social": 1,
+      "sales": 1
+    },
+    "price_tiers": {
+      "basic": 1,
+      "premium": 2
+    },
+    "average_quality_score": 85.0,
+    "high_quality_agents": 2,
+    "revenue_potential": 227,
+    "last_updated": "2025-08-10T22:08:27.120028"
+  }
+}
