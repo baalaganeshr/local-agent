@@ -1,0 +1,49 @@
+# Zero-Cost AI Marketplace Requirements
+# CEO's Strategic Technology Stack
+
+# Core FastAPI and web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# HTTP client for Ollama API
+requests==2.31.0
+httpx==0.25.0
+
+# Async support
+asyncio
+aiofiles==23.2.1
+
+# Configuration management
+toml==0.10.2
+
+# Logging and monitoring
+structlog==23.2.0
+python-json-logger==2.0.7
+
+# Business analytics
+pandas==2.1.3
+numpy==1.25.2
+
+# API documentation
+python-multipart==0.0.6
+
+# Security (for enterprise customers)
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Performance monitoring
+psutil==5.9.6
+
+# Development tools
+pytest==7.4.3
+pytest-asyncio==0.21.1
+black==23.11.0
+flake8==6.1.0
+
+# Optional: Database for analytics (when needed)
+# sqlalchemy==2.0.23
+# sqlite3  # Built into Python
+
+# Optional: Redis for caching (for high-scale deployments)
+# redis==5.0.1

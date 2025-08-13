@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat - Zero-Cost AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #2d2d2d;
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #404040;
+        }
+
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 768px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 1rem;
+            overflow: hidden;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem 0;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.ai {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 0.875rem 1.125rem;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .message.user .message-bubble {
+            background-color: #0084ff;
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai .message-bubble {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing {
+            display: none;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .typing .message-bubble {
+            background-color: #2d2d2d;
+            color: #888;
+            padding: 0.875rem 1.125rem;
+        }
+
+        .typing-dots {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .typing-dots span {
+            height: 6px;
+            width: 6px;
+            background-color: #888;
+            border-radius: 50%;
+            margin-right: 4px;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                opacity: 0.3;
+            }
+            30% {
+                opacity: 1;
+            }
+        }
+
+        .input-container {
+            padding: 1rem;
+            background-color: #1a1a1a;
+            border-top: 1px solid #404040;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #2d2d2d;
+            border-radius: 24px;
+            padding: 0.5rem;
+            border: 1px solid #404040;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #0084ff;
+        }
+
+        #messageInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #e0e0e0;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            resize: none;
+            font-family: inherit;
+            max-height: 120px;
+            min-height: 24px;
+        }
+
+        #messageInput::placeholder {
+            color: #888;
+        }
+
+        #sendButton {
+            background-color: #0084ff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-left: 0.5rem;
+        }
+
+        #sendButton:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+
+        #sendButton:disabled {
+            background-color: #404040;
+            cursor: not-allowed;
+        }
+
+        .welcome {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+
+        .welcome h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #e0e0e0;
+        }
+
+        .welcome p {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 0 0.5rem;
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+            }
+
+            .header h1 {
+                font-size: 1.125rem;
+            }
+        }
+
+        /* Scrollbar styling */
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background-color: #404040;
+            border-radius: 3px;
+        }
+
+        .messages::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AI Chat</h1>
+    </div>
+
+    <div class="chat-container">
+        <div class="messages" id="messages">
+            <div class="welcome">
+                <h2>Welcome to AI Chat</h2>
+                <p>Start a conversation with our AI assistant. Ask anything!</p>
+            </div>
+        </div>
+
+        <div class="typing" id="typing">
+            <div class="message-bubble">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div class="input-wrapper">
+                <textarea 
+                    id="messageInput" 
+                    placeholder="Ask anything..." 
+                    rows="1"
+                ></textarea>
+                <button id="sendButton" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const messagesContainer = document.getElementById('messages');
+        const typingIndicator = document.getElementById('typing');
+        const welcomeMessage = messagesContainer.querySelector('.welcome');
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            
+            // Enable/disable send button
+            sendButton.disabled = !this.value.trim();
+        });
+
+        // Send message on Enter (without Shift)
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Send button click
+        sendButton.addEventListener('click', sendMessage);
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Hide welcome message on first message
+            if (welcomeMessage) {
+                welcomeMessage.style.display = 'none';
+            }
+
+            // Add user message
+            addMessage(message, 'user');
+            
+            // Clear input
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            sendButton.disabled = true;
+
+            // Show typing indicator
+            showTyping();
+
+            // Send to API
+            sendToAPI(message);
+        }
+
+        function addMessage(content, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            bubbleDiv.textContent = content;
+            
+            messageDiv.appendChild(bubbleDiv);
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            typingIndicator.style.display = 'flex';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            typingIndicator.style.display = 'none';
+        }
+
+        async function sendToAPI(message) {
+            try {
+                const response = await fetch('http://localhost:8001/ai/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        prompt: message,
+                        customer_tier: 'basic'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                hideTyping();
+                
+                // Add AI response
+                addMessage(data.response || 'Sorry, I encountered an error processing your request.', 'ai');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                hideTyping();
+                addMessage('Sorry, I\'m having trouble connecting right now. Please try again later.', 'ai');
+            }
+        }
+
+        // Focus input on load
+        window.addEventListener('load', () => {
+            messageInput.focus();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: deployment/docker/backend/Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - CORS_ALLOW_ORIGINS=http://localhost:8080
+      - DEFAULT_TIER=basic
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: deployment/docker/frontend/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
