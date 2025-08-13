@@ -1,0 +1,48 @@
+# Zero-Cost AI Marketplace Configuration
+# CEO Strategic Settings for Maximum Profit
+
+[business]
+profit_target = 95  # Target profit margin percentage
+cost_per_request = 0.0  # ZERO costs with local AI
+pricing_basic = 0.05    # $0.05 per request for basic customers
+pricing_premium = 0.15  # $0.15 per request for premium customers  
+pricing_enterprise = 0.30  # $0.30 per request for enterprise customers
+
+[models]
+lightweight_model = "llama3.2:3b"
+heavyweight_model = "gpt-oss:20b"
+fallback_enabled = true
+auto_scaling = true
+
+[routing]
+# Smart routing thresholds
+simple_complexity_threshold = 10      # Words in prompt
+medium_complexity_threshold = 50     # Words in prompt
+enterprise_keywords_weight = 1.5     # Multiplier for enterprise detection
+response_time_target = 5.0           # Target response time in seconds
+
+[api]
+host = "0.0.0.0"
+port = 8000
+cors_enabled = true
+rate_limit_basic = 100      # Requests per hour for basic tier
+rate_limit_premium = 500    # Requests per hour for premium tier  
+rate_limit_enterprise = 2000  # Requests per hour for enterprise tier
+
+[monitoring]
+performance_logging = true
+business_analytics = true
+profit_tracking = true
+customer_usage_analytics = true
+
+[scaling]
+auto_model_selection = true
+load_balancing = true
+batch_processing = true
+concurrent_requests_limit = 50
+
+[competitive_advantage]
+zero_ai_costs = true
+dual_model_routing = true
+enterprise_grade_quality = true
+unlimited_scalability = true

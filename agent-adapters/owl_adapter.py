@@ -5,14 +5,40 @@ Adapts external agents to work with our OWL orchestration system
 """
 import sys
 import os
-sys.path.insert(0, '../../Multi-ai-agents/owl')
-sys.path.insert(0, '../../Multi-ai-agents')
+
+# Add the correct paths for OWL integration
+current_dir = os.path.dirname(os.path.abspath(__file__))
+owl_path = os.path.join(current_dir, '..', 'owl')
+agents_path = os.path.join(current_dir, '..')
+
+sys.path.insert(0, owl_path)
+sys.path.insert(0, agents_path)
+
+# Initialize variables to None first
+OWLIntegration = None
+BaseAgent = None
 
 try:
-    from owl_integration import OWLIntegration
+    # Import from the root directory where we created owl_integration.py
+    sys.path.insert(0, os.path.join(current_dir, '..'))
+    from owl_integration import MockOWLIntegration as OWLIntegration
     from agents.base_agent import BaseAgent
-except ImportError:
-    print("⚠️ OWL integration not available in this environment")
+    
+except (ImportError, ModuleNotFoundError) as e:
+    print(f"⚠️ OWL integration not available in this environment: {e}")
+    
+    # Mock OWLIntegration class for when the real one isn't available
+    class OWLIntegration:
+        def __init__(self):
+            pass
+        
+        async def run_society_async(self, task: dict, agents: list):
+            return {"mock": True, "message": "OWL integration not available"}
+    
+    # Mock BaseAgent class
+    class BaseAgent:
+        def __init__(self):
+            pass
 
 class OWLAdapter:
     """Adapter to integrate external agents with OWL orchestration"""

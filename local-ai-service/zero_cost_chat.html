@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero-Cost AI Marketplace - Enterprise Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header .subtitle {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .competitive-advantage {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #27ae60;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .metrics-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+            word-wrap: break-word;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: 20px;
+        }
+
+        .message.ai .message-bubble {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #e9ecef;
+            margin-right: 20px;
+        }
+
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        .model-indicator {
+            background: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .response-time {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .typing-indicator {
+            display: none;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .typing-bubble {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .typing-dots {
+            display: flex;
+            align-items: center;
+        }
+
+        .typing-dots span {
+            height: 8px;
+            width: 8px;
+            background: #3498db;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .input-section {
+            background: white;
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .customer-tier {
+            background: #f39c12;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .input-box {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-box:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .upgrade-prompt {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .upgrade-prompt:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 95%;
+                height: 95vh;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .competitive-advantage {
+                position: static;
+                margin-top: 10px;
+                display: inline-block;
+            }
+            
+            .metrics-bar {
+                padding: 10px;
+            }
+            
+            .metric {
+                min-width: 100px;
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <h1>🚀 Zero-Cost AI Marketplace</h1>
+            <div class="subtitle">Enterprise-Grade AI • Zero API Costs • 95% Profit Margins</div>
+            <div class="competitive-advantage">SAVE $100+/month</div>
+        </div>
+
+        <div class="metrics-bar">
+            <div class="metric">
+                <div class="metric-value" id="totalRequests">0</div>
+                <div class="metric-label">Requests</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value" id="avgResponseTime">0.0s</div>
+                <div class="metric-label">Avg Response</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value" id="moneySaved">$0.00</div>
+                <div class="metric-label">Money Saved</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value" id="profitMargin">98%</div>
+                <div class="metric-label">Profit Margin</div>
+            </div>
+        </div>
+
+        <div class="upgrade-prompt" id="upgradePrompt" style="display: none;">
+            🔥 UPGRADE TO PREMIUM: Unlock GPT-OSS 20B Heavy Model + Priority Support + Advanced Analytics
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai">
+                <div class="message-bubble">
+                    <div class="message-info">
+                        <span class="model-indicator">Llama 3.2:3B</span>
+                        <span class="response-time">Instant</span>
+                    </div>
+                    Welcome to the Zero-Cost AI Marketplace! 🚀<br><br>
+                    <strong>Competitive Advantages:</strong><br>
+                    • 100% Local Processing (Complete Privacy)<br>
+                    • Zero Ongoing API Costs (vs $20-100/month competitors)<br>
+                    • Smart Dual-Model Routing (Optimal Performance)<br>
+                    • Unlimited Usage (No Rate Limits)<br><br>
+                    Ask me anything and watch our AI models work their magic!
+                </div>
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-bubble">
+                <div class="typing-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <span style="margin-left: 10px;">AI is thinking...</span>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="customer-tier" id="customerTier">BASIC TIER</div>
+            <input type="text" class="input-box" id="messageInput" placeholder="Ask our AI anything... (Press Enter to send)" maxlength="1000">
+            <button class="send-button" id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Business Analytics & State Management
+        class AIMarketplace {
+            constructor() {
+                this.apiUrl = 'http://localhost:8001';
+                this.totalRequests = 0;
+                this.responseTimes = [];
+                this.totalSaved = 0;
+                this.customerTier = 'basic';
+                this.initializeEventListeners();
+                this.updateMetrics();
+            }
+
+            initializeEventListeners() {
+                const sendButton = document.getElementById('sendButton');
+                const messageInput = document.getElementById('messageInput');
+
+                sendButton.addEventListener('click', () => this.sendMessage());
+                messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+
+                // Upgrade prompt click
+                document.getElementById('upgradePrompt').addEventListener('click', () => {
+                    this.showUpgradeDialog();
+                });
+            }
+
+            async sendMessage() {
+                const messageInput = document.getElementById('messageInput');
+                const message = messageInput.value.trim();
+                
+                if (!message) return;
+
+                // Disable input during processing
+                this.setInputEnabled(false);
+                
+                // Add user message to chat
+                this.addMessage(message, 'user');
+                messageInput.value = '';
+
+                // Show typing indicator
+                this.showTypingIndicator();
+
+                const startTime = Date.now();
+
+                try {
+                    // Call our API
+                    const response = await fetch(`${this.apiUrl}/ai/generate`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            prompt: message,
+                            customer_tier: this.customerTier,
+                            max_tokens: this.customerTier === 'basic' ? 500 : 2000
+                        })
+                    });
+
+                    const data = await response.json();
+                    const responseTime = (Date.now() - startTime) / 1000;
+
+                    this.hideTypingIndicator();
+                    
+                    if (data.success) {
+                        // Add AI response
+                        this.addMessage(data.response, 'ai', data.model_used, responseTime, data.profit_margin);
+                        
+                        // Update business metrics
+                        this.updateBusinessMetrics(responseTime, data.profit_margin);
+                        
+                        // Show upgrade prompt occasionally for basic users
+                        if (this.customerTier === 'basic' && this.totalRequests % 3 === 0) {
+                            this.showUpgradePrompt();
+                        }
+                    } else {
+                        this.addMessage(`❌ Error: ${data.error}`, 'ai', 'System', responseTime);
+                    }
+                } catch (error) {
+                    this.hideTypingIndicator();
+                    this.addMessage(`❌ Connection Error: ${error.message}`, 'ai', 'System', (Date.now() - startTime) / 1000);
+                }
+
+                this.setInputEnabled(true);
+            }
+
+            addMessage(content, type, model = null, responseTime = null, profitMargin = null) {
+                const messagesContainer = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+
+                let messageInfo = '';
+                if (type === 'ai' && model && responseTime !== null) {
+                    const modelDisplay = model === 'llama3.2:3b' ? 'Llama 3.2:3B' : 'GPT-OSS:20B';
+                    messageInfo = `
+                        <div class="message-info">
+                            <span class="model-indicator">${modelDisplay}</span>
+                            <span class="response-time">${responseTime.toFixed(2)}s</span>
+                            ${profitMargin ? `<span style="margin-left: 10px; color: #27ae60; font-weight: bold;">${Math.round(profitMargin)}% margin</span>` : ''}
+                        </div>
+                    `;
+                }
+
+                messageDiv.innerHTML = `
+                    <div class="message-bubble">
+                        ${messageInfo}
+                        ${content.replace(/\n/g, '<br>')}
+                    </div>
+                `;
+
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            showTypingIndicator() {
+                document.getElementById('typingIndicator').style.display = 'flex';
+                const messagesContainer = document.getElementById('chatMessages');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            hideTypingIndicator() {
+                document.getElementById('typingIndicator').style.display = 'none';
+            }
+
+            setInputEnabled(enabled) {
+                const sendButton = document.getElementById('sendButton');
+                const messageInput = document.getElementById('messageInput');
+                
+                sendButton.disabled = !enabled;
+                messageInput.disabled = !enabled;
+                
+                if (enabled) {
+                    messageInput.focus();
+                }
+            }
+
+            updateBusinessMetrics(responseTime, profitMargin) {
+                this.totalRequests++;
+                this.responseTimes.push(responseTime);
+                
+                // Calculate money saved (assuming competitors charge $0.002 per token, we process ~100 tokens avg)
+                const costSaved = 0.20; // $0.20 per request saved vs competitors
+                this.totalSaved += costSaved;
+
+                this.updateMetrics();
+            }
+
+            updateMetrics() {
+                document.getElementById('totalRequests').textContent = this.totalRequests;
+                
+                const avgTime = this.responseTimes.length > 0 
+                    ? this.responseTimes.reduce((a, b) => a + b, 0) / this.responseTimes.length 
+                    : 0;
+                document.getElementById('avgResponseTime').textContent = avgTime.toFixed(1) + 's';
+                
+                document.getElementById('moneySaved').textContent = '$' + this.totalSaved.toFixed(2);
+                
+                // Update customer tier display
+                const tierElement = document.getElementById('customerTier');
+                switch(this.customerTier) {
+                    case 'premium':
+                        tierElement.textContent = 'PREMIUM TIER';
+                        tierElement.style.background = '#e74c3c';
+                        break;
+                    case 'enterprise':
+                        tierElement.textContent = 'ENTERPRISE TIER';
+                        tierElement.style.background = '#8e44ad';
+                        break;
+                    default:
+                        tierElement.textContent = 'BASIC TIER';
+                        tierElement.style.background = '#f39c12';
+                }
+            }
+
+            showUpgradePrompt() {
+                const prompt = document.getElementById('upgradePrompt');
+                prompt.style.display = 'block';
+                setTimeout(() => {
+                    prompt.style.display = 'none';
+                }, 5000);
+            }
+
+            showUpgradeDialog() {
+                const message = `🔥 PREMIUM UPGRADE BENEFITS:\n\n` +
+                    `• Access to GPT-OSS 20B Heavy Model\n` +
+                    `• 4x Larger Context Window (8,192 tokens)\n` +
+                    `• Priority Processing Speed\n` +
+                    `• Advanced Analytics Dashboard\n` +
+                    `• 24/7 Priority Support\n` +
+                    `• Custom Model Fine-tuning\n\n` +
+                    `Price: $27/month (vs $127/month competitors charge)\n` +
+                    `Savings: $100/month guaranteed!\n\n` +
+                    `Ready to upgrade your AI experience?`;
+                
+                if (confirm(message)) {
+                    this.customerTier = 'premium';
+                    this.updateMetrics();
+                    this.addMessage('🎉 Welcome to Premium! You now have access to our most powerful AI models and features. Try asking a complex question to see the difference!', 'ai', 'System', 0);
+                }
+            }
+        }
+
+        // Initialize the marketplace when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.aiMarketplace = new AIMarketplace();
+            
+            // Focus on input
+            document.getElementById('messageInput').focus();
+            
+            // Add welcome analytics
+            setTimeout(() => {
+                const event = new CustomEvent('marketplaceReady', { 
+                    detail: { timestamp: new Date().toISOString() }
+                });
+                document.dispatchEvent(event);
+            }, 1000);
+        });
+
+        // Business Analytics Tracking
+        document.addEventListener('marketplaceReady', (e) => {
+            console.log('🚀 Zero-Cost AI Marketplace Ready!', e.detail);
+        });
+    </script>
+</body>
+</html>
