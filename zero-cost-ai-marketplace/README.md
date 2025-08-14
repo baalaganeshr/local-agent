@@ -1,29 +1,32 @@
 # Zero-Cost AI Marketplace
 
-A clean, modular MVP for an enterprise-ready AI marketplace with a minimal professional chat interface, FastAPI backend, mock AI models for development, and deployment tooling.
+A clean, modular MVP for an enterprise-ready AI marketplace with integrated chat interface, FastAPI backend, local AI models, and full static file serving.
 
 ## Key Features
-- Minimal, professional ChatGPT-style UI (dark theme)
-- FastAPI backend with model routing, analytics, and customer tiers
-- Mock AI models simulating GPT-OSS:20B and Llama with realistic latency
-- Dockerized services and env configuration for fast deployment
-- SQLite-ready (upgradeable), simple business analytics scaffolding
+- **Integrated Chat Interface**: Professional ChatGPT-style UI served directly from the backend
+- **FastAPI Backend**: Complete API with model routing, analytics, and customer tiers  
+- **Static File Serving**: Frontend assets served by FastAPI with CORS configured
+- **Local AI Models**: Zero-cost operation with gpt-oss:20b and llama3.2:3b
+- **One-Command Startup**: Single script launches complete integrated system
+- **Production Ready**: Docker support and deployment tooling included
 
-## Quick Start (Local)
+## 🚀 Quick Start
 
-1. Requirements
-   - Python 3.10+
-   - Node 18+ (optional, for frontend dev server)
-   - Docker (optional, for containers)
+### Integrated System (Recommended)
+Start the complete integrated system with chat interface:
 
-2. Install Python deps
 ```bash
 cd zero-cost-ai-marketplace
-python -m venv .venv && . .venv/Scripts/activate  # Windows Powershell: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+python start_backend.py
 ```
 
-3. Start backend
+Then open your browser to:
+- **Chat Interface**: http://localhost:8001/
+- **API Health**: http://localhost:8001/api/health  
+- **API Docs**: http://localhost:8001/docs
+
+### Manual Backend Only
 ```bash
 uvicorn backend.api.main:app --reload --port 8001
 ```

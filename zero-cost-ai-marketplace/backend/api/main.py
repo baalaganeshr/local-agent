@@ -1,10 +1,13 @@
 from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional, List, Literal
 import time
 import logging
+import os
 
 from backend.config.settings import settings
 from backend.services.ai_service import generate_reply
@@ -36,6 +39,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files for frontend
+frontend_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "..", "frontend")
+if os.path.exists(frontend_path):
+    app.mount("/static", StaticFiles(directory=frontend_path), name="static")
 
 _REQUEST_LOG: dict[str, list[float]] = {}
 _RATE_LIMIT_PER_HOUR = 100
@@ -87,6 +95,15 @@ async def logging_middleware(request: Request, call_next):
     duration_ms = int((time.time() - start) * 1000)
     logger.info("%s %s %s %dms", request.method, request.url.path, request.headers.get("x-api-key", "anon"), duration_ms)
     return response
+
+@app.get("/")
+async def serve_chat():
+    """Serve the main chat interface"""
+    chat_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "..", "frontend", "chat.html")
+    if os.path.exists(chat_file_path):
+        return FileResponse(chat_file_path)
+    else:
+        raise HTTPException(status_code=404, detail="Chat interface not found")
 
 @app.get("/api/health")
 async def health():
