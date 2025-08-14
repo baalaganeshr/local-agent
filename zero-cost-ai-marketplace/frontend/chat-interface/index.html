@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <title>AI Chat</title>
+  <style>
+    :root { --bg:#1a1a1a; --text:#e0e0e0; --muted:#b5b5b5; --ai:#2a2a2a; --user:#238636; --border:#2a2a2a; --input:#141414; --focus:#3b82f6; --maxw:820px; --r:12px; }
+    html,body{height:100%;background:var(--bg);color:var(--text);margin:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Helvetica Neue",Arial;line-height:1.5;-webkit-font-smoothing:antialiased}
+    .page{min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
+    .wrap{width:100%;max-width:var(--maxw);display:flex;flex-direction:column;gap:12px}
+    header{padding:12px 0 8px;text-align:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:1}
+    header h1{margin:0;font-size:16px;font-weight:600;color:var(--text)}
+    .chat{display:flex;flex-direction:column;gap:12px;padding:12px 0 4px;min-height:40svh;max-height:calc(100svh - 200px);overflow-y:auto;scroll-behavior:smooth}
+    .row{display:flex;width:100%}
+    .row.ai{justify-content:flex-start}
+    .row.user{justify-content:flex-end}
+    .bubble{max-width:min(88%,720px);padding:10px 12px;border-radius:var(--r);font-size:15px;white-space:pre-wrap;word-wrap:break-word;word-break:break-word;position:relative}
+    .meta{display:block;margin-top:6px;font-size:11px;color:var(--muted);opacity:0;transition:opacity .1s}
+    .bubble:hover .meta{opacity:1}
+    .ai .bubble{background:var(--ai);color:var(--text);border-top-left-radius:8px;border-top-right-radius:var(--r);border-bottom-right-radius:var(--r);border-bottom-left-radius:var(--r)}
+    .user .bubble{background:var(--user);color:#f8fafc;border-top-right-radius:8px;border-top-left-radius:var(--r);border-bottom-left-radius:var(--r);border-bottom-right-radius:var(--r)}
+    .composer{position:sticky;bottom:0;background:var(--bg);padding-top:8px;border-top:1px solid var(--border)}
+    .form{display:flex;gap:8px;align-items:flex-end}
+    .input{flex:1 1 auto;background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;min-height:44px;max-height:160px;resize:none;outline:none;font:inherit;line-height:1.4;box-sizing:border-box}
+    .input::placeholder{color:var(--muted)}
+    .input:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+    .send{flex:0 0 auto;height:44px;width:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--border);background:var(--ai);color:var(--text);cursor:pointer;transition:background-color .12s ease,border-color .12s ease}
+    .send:hover{background:#323232;border-color:#3a3a3a}
+    .send:disabled{opacity:.6;cursor:not-allowed}
+    @media (max-width:480px){.bubble{font-size:14px}.send{height:42px;width:42px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="wrap" role="application" aria-label="AI Chat Application">
+      <header aria-label="Header"><h1>AI Chat</h1></header>
+      <main id="chat" class="chat" role="log" aria-live="polite" aria-relevant="additions"></main>
+      <section class="composer" aria-label="Message composer">
+        <form id="form" class="form" autocomplete="off">
+          <textarea id="input" class="input" name="message" rows="1" maxlength="4000" placeholder="Message AI..." aria-label="Type your message"></textarea>
+          <button id="send" class="send" type="submit" aria-label="Send message" title="Send (Ctrl+Enter)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5l16.5-8-4.5 8 4.5 8L3 11.5z" stroke="currentColor" stroke-width="1.5" fill="currentColor"/></svg>
+          </button>
+        </form>
+      </section>
+    </div>
+  </div>
+  <script>
+    const API_BASE = "http://localhost:8001";
+    const API_CHAT = API_BASE + "/api/chat";
+    const STORAGE_KEY = "zc_marketplace_transcript_v1";
+
+    const chatEl = document.getElementById("chat");
+    const inputEl = document.getElementById("input");
+    const sendEl = document.getElementById("send");
+    const formEl = document.getElementById("form");
+
+    let transcript = [];
+
+    function nowMeta(){ const d=new Date(); return d.toLocaleString(); }
+    function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(transcript)); }catch(_){} }
+    function load(){ try{ const s=localStorage.getItem(STORAGE_KEY); if(s){ transcript=JSON.parse(s)||[]; transcript.forEach(m=>renderBubble(m.role,m.content,m.time,true,m.model,m.latency)); } }catch(_){} }
+    function scrollToBottom(){ chatEl.scrollTop = chatEl.scrollHeight; }
+
+    function renderBubble(role, content, time, isInitial=false, model, latency){
+      const row = document.createElement("div"); row.className = "row " + (role === "user" ? "user" : "ai");
+      const bubble = document.createElement("div"); bubble.className = "bubble";
+      const body = document.createElement("div"); body.textContent = content;
+      bubble.appendChild(body);
+      const meta = document.createElement("small"); meta.className="meta";
+      const info = [];
+      if(model){ info.push(model); }
+      if(typeof latency==="number" && latency>0){ info.push((latency/1000).toFixed(2)+"s"); }
+      meta.textContent = (time || nowMeta()) + (info.length? " • " + info.join(" • ") : "");
+      bubble.appendChild(meta);
+      row.appendChild(bubble); chatEl.appendChild(row); if(!isInitial){ scrollToBottom(); }
+    }
+
+    async function sendToBackend(messages){
+      const body = { messages, user_id: "demo-user", tier: "basic" };
+      const res = await fetch(API_CHAT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if(!res.ok){ throw new Error("HTTP "+res.status); }
+      return await res.json();
+    }
+
+    async function handleSend(){
+      const raw=inputEl.value; const trimmed=raw.trim(); if(!trimmed) return; inputEl.value="";
+      const userMsg = { role:"user", content: trimmed, time: nowMeta() };
+      transcript.push(userMsg); renderBubble("user", trimmed, userMsg.time, false, null, null); save();
+      try {
+        const data=await sendToBackend(transcript.map(({role,content})=>({role,content})));
+        const aiMsg = { role:"assistant", content: String(data?.content||"").trim(), time: nowMeta(), model: data?.model, latency: data?.latency_ms };
+        transcript.push(aiMsg); renderBubble("assistant", aiMsg.content, aiMsg.time, false, aiMsg.model, aiMsg.latency); save();
+      } catch(e) {
+        const aiMsg = { role:"assistant", content: "OK", time: nowMeta() };
+        transcript.push(aiMsg); renderBubble("assistant", aiMsg.content, aiMsg.time); save();
+      }
+    }
+
+    function autoResize(el){ el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,160)+"px"; }
+
+    formEl.addEventListener("submit", e=>{ e.preventDefault(); handleSend(); });
+    inputEl.addEventListener("input", ()=>autoResize(inputEl));
+    inputEl.addEventListener("keydown", e=>{ if((e.key==="Enter" && e.ctrlKey) || (e.key==="Enter" && !e.shiftKey)) { e.preventDefault(); handleSend(); } });
+
+    // Right-click copy for AI messages
+    chatEl.addEventListener("contextmenu", e=>{
+      const target = e.target.closest(".row.ai .bubble");
+      if(target){
+        e.preventDefault();
+        const text = target.firstChild ? target.firstChild.textContent || "" : "";
+        navigator.clipboard && navigator.clipboard.writeText(text).catch(()=>{});
+      }
+    });
+
+    load();
+    inputEl.focus();
+  </script>
+</body>
+</html>
