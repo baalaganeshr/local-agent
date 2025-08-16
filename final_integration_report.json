@@ -1,0 +1,113 @@
+{
+  "timestamp": "2025-08-15T22:25:55.718030",
+  "overall_status": "minor_issues",
+  "integrations": {
+    "ollama": {
+      "status": "connected",
+      "url": "http://localhost:11434/api/tags",
+      "description": "Ollama AI Model Service",
+      "response_time": 2.076762,
+      "critical": true
+    },
+    "local_ai": {
+      "status": "disconnected",
+      "url": "http://localhost:8001/health",
+      "description": "Local AI Service API",
+      "error": "HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000186C166B890>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+      "critical": true
+    },
+    "marketplace": {
+      "status": "connected",
+      "url": "http://localhost:8080/health",
+      "description": "Zero-Cost AI Marketplace",
+      "response_time": 2.031019,
+      "critical": false
+    },
+    "marketplace_api": {
+      "status": "connected",
+      "url": "http://localhost:8080/api/status",
+      "description": "Marketplace API Endpoints",
+      "response_time": 2.040319,
+      "critical": false
+    },
+    "agent_base_agent": {
+      "status": "available",
+      "module": "agents.base_agent",
+      "class": "BaseAgent",
+      "description": "Base Agent Framework"
+    },
+    "agent_customer_request": {
+      "status": "available",
+      "module": "customer_request_agent",
+      "class": "CustomerRequestAgent",
+      "description": "Customer Request Handler Agent"
+    },
+    "agent_owl_integration": {
+      "status": "available",
+      "module": "owl_integration",
+      "class": "MockOWLIntegration",
+      "description": "OWL Framework Integration"
+    },
+    "agent_discovery_engine": {
+      "status": "available",
+      "module": "agent_discovery_engine",
+      "class": "AgentDiscoveryEngine",
+      "description": "Agent Discovery System"
+    },
+    "agent_marketplace_engine": {
+      "status": "available",
+      "module": "marketplace_engine",
+      "class": "MarketplaceEngine",
+      "description": "Marketplace Engine"
+    },
+    "file_main_requirements": {
+      "status": "available",
+      "path": "requirements.txt",
+      "description": "Main Project Dependencies",
+      "size": 963
+    },
+    "file_integration_config": {
+      "status": "available",
+      "path": "integration_lab.toml",
+      "description": "Integration Lab Configuration",
+      "size": 3871
+    },
+    "file_agent_init": {
+      "status": "available",
+      "path": "agents\\__init__.py",
+      "description": "Agent Module Initialization",
+      "size": 173
+    },
+    "file_base_agent": {
+      "status": "available",
+      "path": "agents\\base_agent.py",
+      "description": "Base Agent Implementation",
+      "size": 3542
+    },
+    "file_local_ai_requirements": {
+      "status": "available",
+      "path": "local-ai-service\\requirements.txt",
+      "description": "Local AI Service Dependencies",
+      "size": 925
+    },
+    "file_marketplace_requirements": {
+      "status": "available",
+      "path": "zero-cost-ai-marketplace\\requirements.txt",
+      "description": "Marketplace Dependencies",
+      "size": 129
+    }
+  },
+  "summary": {
+    "total_integrations": 15,
+    "connected_integrations": 14,
+    "error_integrations": 0,
+    "disconnected_integrations": 1,
+    "success_rate": 93.33333333333333,
+    "critical_issues": [
+      "local_ai"
+    ]
+  },
+  "recommendations": [
+    "Fix critical services: local_ai"
+  ]
+}

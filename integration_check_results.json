@@ -1,0 +1,112 @@
+{
+  "timestamp": "2025-08-16T22:40:02.504354",
+  "checks": {
+    "python_environment": {
+      "status": "healthy",
+      "python_version": "3.13.7",
+      "total_packages": 77,
+      "missing_packages": [],
+      "required_packages_installed": 9
+    },
+    "services": {
+      "services": {
+        "ollama": {
+          "status": "running",
+          "response_code": 200,
+          "url": "http://localhost:11434/api/tags"
+        },
+        "local_ai": {
+          "status": "running",
+          "response_code": 200,
+          "url": "http://localhost:8001/health"
+        },
+        "frontend": {
+          "status": "running",
+          "response_code": 200,
+          "url": "http://localhost:8080"
+        },
+        "marketplace": {
+          "status": "running",
+          "response_code": 404,
+          "url": "http://localhost:8001/marketplace/health"
+        }
+      },
+      "total_services": 4,
+      "running_services": 4
+    },
+    "agent_modules": {
+      "modules": {
+        "agents.base_agent": {
+          "status": "importable",
+          "class": "BaseAgent"
+        },
+        "owl_integration": {
+          "status": "importable",
+          "class": "MockOWLIntegration"
+        },
+        "agent_discovery_engine": {
+          "status": "importable",
+          "class": "AgentDiscoveryEngine"
+        },
+        "customer_request_agent": {
+          "status": "importable",
+          "class": "CustomerRequestAgent"
+        },
+        "marketplace_engine": {
+          "status": "importable",
+          "class": "MarketplaceEngine"
+        }
+      },
+      "total_modules": 5,
+      "working_modules": 5
+    },
+    "file_structure": {
+      "files": {
+        "requirements.txt": {
+          "status": "exists",
+          "size": 963
+        },
+        "agents/__init__.py": {
+          "status": "exists",
+          "size": 173
+        },
+        "agents/base_agent.py": {
+          "status": "exists",
+          "size": 3542
+        },
+        "local-ai-service/requirements.txt": {
+          "status": "exists",
+          "size": 925
+        },
+        "zero-cost-ai-marketplace/requirements.txt": {
+          "status": "exists",
+          "size": 129
+        },
+        "integration_lab.toml": {
+          "status": "exists",
+          "size": 3871
+        }
+      },
+      "total_files": 6,
+      "existing_files": 6
+    },
+    "system_resources": {
+      "cpu_usage": 20.7,
+      "memory_usage": {
+        "total": 23,
+        "available": 6,
+        "percent": 71.2
+      },
+      "disk_usage": {
+        "total": 159,
+        "free": 74,
+        "percent": 53.629350250792854
+      }
+    }
+  },
+  "overall_status": "healthy",
+  "issues": [],
+  "recommendations": [
+    "System is healthy - consider running regular checks"
+  ]
+}

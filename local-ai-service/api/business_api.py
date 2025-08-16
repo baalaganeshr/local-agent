@@ -143,6 +143,16 @@ async def health_check():
         business_metrics=business_metrics
     )
 
+@app.get("/marketplace/health")
+async def marketplace_health():
+    """Marketplace-specific health check for integration tests"""
+    return {
+        "status": "healthy",
+        "service": "marketplace",
+        "message": "Zero-Cost AI Marketplace API is running",
+        "timestamp": datetime.now().isoformat()
+    }
+
 @app.post("/ai/generate", response_model=AIResponse)
 async def generate_ai_response(request: AIRequest):
     """
